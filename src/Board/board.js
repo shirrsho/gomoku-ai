@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import './board.css';
+import { comMove } from '../ComMove';
 
 const Board = () => {
-	const [turn, setTurn] = useState('b');
-	const [cells, setCells] = useState(Array(100).fill(''));
-	const [winner, setWinner] = useState('');
 
 	const row_count = 10;
 	const col_count = 10;
+	const win_count = 5;
+	
+	const [turn, setTurn] = useState('b');
+	const [cells, setCells] = useState(Array(row_count*col_count).fill(''));
+	const [winner, setWinner] = useState('');
+
+	
 
 	const checkForWinner = (squares) => {
-		// let combos = {
-		// 	across: [
-		// 		[0, 1, 2],
-		// 		[3, 4, 5],
-		// 		[6, 7, 8],
-		// 	],
-		// 	down: [
-		// 		[0, 3, 6],
-		// 		[1, 4, 7],
-		// 		[2, 5, 8],
-		// 	],
-		// 	diagnol: [
-		// 		[0, 4, 8],
-		// 		[2, 4, 6],
-		// 	],
-		// };
 
 		let redrow = 0;
 		let blackrow = 0;
@@ -36,24 +25,24 @@ const Board = () => {
 
 		for(var i = 0 ; i < row_count ; i++){
 			for(var j = 0 ; j < col_count ; j++){
-				if(squares[i*10+j]==='r') redrow++;
-				else if(squares[i*10+j]==='b') blackrow++;
+				if(squares[i*col_count+j]==='r') redrow++;
+				else if(squares[i*col_count+j]==='b') blackrow++;
 				else {
 					redrow = 0;
 					blackrow = 0;
 				}
-				if(squares[j*10+i]==='r') redcol++;
-				else if(squares[j*10+i]==='b') blackcol++;
+				if(squares[j*row_count+i]==='r') redcol++;
+				else if(squares[j*row_count+i]==='b') blackcol++;
 				else {
 					redcol = 0;
 					blackcol = 0;
 				}
 				// console.log(i+" ind"+(i*10+j)+"red"+red+"black"+black);
-				if(redrow===5 || redcol===5){
+				if(redrow===win_count || redcol===win_count){
 					setWinner('r');
 					break;
 				}
-				else if(blackrow===5 || blackcol===5){
+				else if(blackrow===win_count || blackcol===win_count){
 					setWinner('b');
 					break;
 				}
@@ -69,17 +58,17 @@ const Board = () => {
 				var x = k - y;
 				if (x >= 0 && x < row_count) {
 					// console.log(y*10+x);
-					if(squares[y*10+x]==='r') reddg++;
-					else if(squares[y*10+x]==='b') blackdg++;
+					if(squares[y*col_count+x]==='r') reddg++;
+					else if(squares[y*col_count+x]==='b') blackdg++;
 					else {
 						reddg = 0;
 						blackdg = 0;
 					}
-					if(reddg===5 || reddg===5){
+					if(reddg===win_count || reddg===win_count){
 						setWinner('r');
 						break;
 					}
-					else if(blackdg===5 || blackdg===5){
+					else if(blackdg===win_count || blackdg===win_count){
 						setWinner('b');
 						break;
 					}
@@ -91,49 +80,28 @@ const Board = () => {
 
 		reddg = 0; blackdg = 0;
 
-		for (var k = 0; k <= 2 * (row_count - 1); ++k) {
-			for (var y = col_count - 1; y >= 0; --y) {
-				var x = k - (col_count - y);
+		for (k = 0; k <= 2 * (row_count - 1); ++k) {
+			for (y = col_count - 1; y >= 0; --y) {
+				x = k - (col_count - y);
 				if (x >= 0 && x < row_count) {
-					if(squares[y*10+x]==='r') reddg++;
-					else if(squares[y*10+x]==='b') blackdg++;
+					if(squares[y*col_count+x]==='r') reddg++;
+					else if(squares[y*col_count+x]==='b') blackdg++;
 					else {
 						reddg = 0;
 						blackdg = 0;
 					}
-					if(reddg===5 || reddg===5){
+					if(reddg===win_count || reddg===win_count){
 						setWinner('r');
 						break;
 					}
-					else if(blackdg===5 || blackdg===5){
+					else if(blackdg===win_count || blackdg===win_count){
 						setWinner('b');
 						break;
 					}
 				}
 			}
 		}
-
-		// for (let combo in combos) {
-		// 	combos[combo].forEach((pattern) => {
-		// 		if (
-		// 			squares[pattern[0]] === '' ||
-		// 			squares[pattern[1]] === '' ||
-		// 			squares[pattern[2]] === ''
-		// 		) {
-		// 			// do nothing
-		// 		} else if (
-		// 			squares[pattern[0]] === squares[pattern[1]] &&
-		// 			squares[pattern[1]] === squares[pattern[2]]
-		// 		) {
-		// 			setWinner(squares[pattern[0]]);
-		// 		}
-		// 	});
-		// }
 	};
-
-	const comMove = (squares) => {
-		squares[Math.floor(Math.random()*100)] = 'r';
-	}
 
 	const handleClick = (num) => {
 		if (cells[num] !== '') {
@@ -145,6 +113,7 @@ const Board = () => {
 
 		if (turn === 'b') {
 			squares[num] = 'b';
+			setCells(squares)
 			setTurn('r');
 			comMove(squares);
 			setTurn('b');
@@ -159,7 +128,7 @@ const Board = () => {
 
 	const handleRestart = () => {
 		setWinner('');
-		setCells(Array(100).fill(''));
+		setCells(Array(row_count*col_count).fill(''));
 		setTurn('b');
 	};
 
