@@ -23,26 +23,41 @@ const Board = () => {
 		let reddg = 0;
 		let blackdg = 0;
 
+		// red lines
 		for(var i = 0 ; i < row_count ; i++){
 			for(var j = 0 ; j < col_count ; j++){
 				if(squares[i*col_count+j]==='r') redrow++;
-				else if(squares[i*col_count+j]==='b') blackrow++;
 				else {
 					redrow = 0;
-					blackrow = 0;
 				}
 				if(squares[j*row_count+i]==='r') redcol++;
-				else if(squares[j*row_count+i]==='b') blackcol++;
 				else {
 					redcol = 0;
-					blackcol = 0;
 				}
 				// console.log(i+" ind"+(i*10+j)+"red"+red+"black"+black);
 				if(redrow===win_count || redcol===win_count){
 					setWinner('r');
 					break;
 				}
-				else if(blackrow===win_count || blackcol===win_count){
+			}
+			redrow = 0; blackrow = 0;
+			redcol = 0; blackcol = 0;
+			if(winner!=='') break;
+		}
+		// black lines
+		for(var i = 0 ; i < row_count ; i++){
+			for(var j = 0 ; j < col_count ; j++){
+				if(squares[i*col_count+j]==='b') blackrow++;
+				else {
+					blackrow = 0;
+				}
+				if(squares[j*row_count+i]==='b') blackcol++;
+				else {
+					redcol = 0;
+					blackcol = 0;
+				}
+				// console.log(i+" ind"+(i*10+j)+"red"+red+"black"+black);
+				if(blackrow===win_count || blackcol===win_count){
 					setWinner('b');
 					break;
 				}
@@ -51,7 +66,7 @@ const Board = () => {
 			redcol = 0; blackcol = 0;
 			if(winner!=='') break;
 		}
-
+		// red dg 1
 		for (var k = 0; k <= 2 * (row_count - 1); ++k) {
 			
 			for (var y = col_count - 1; y >= 0; --y) {
@@ -59,17 +74,11 @@ const Board = () => {
 				if (x >= 0 && x < row_count) {
 					// console.log(y*10+x);
 					if(squares[y*col_count+x]==='r') reddg++;
-					else if(squares[y*col_count+x]==='b') blackdg++;
 					else {
 						reddg = 0;
-						blackdg = 0;
 					}
-					if(reddg===win_count || reddg===win_count){
+					if(reddg===win_count){
 						setWinner('r');
-						break;
-					}
-					else if(blackdg===win_count || blackdg===win_count){
-						setWinner('b');
 						break;
 					}
 				}
@@ -79,22 +88,52 @@ const Board = () => {
 		}
 
 		reddg = 0; blackdg = 0;
-
+		// black dg 1
+		for (var k = 0; k <= 2 * (row_count - 1); ++k) {
+			
+			for (var y = col_count - 1; y >= 0; --y) {
+				var x = k - y;
+				if (x >= 0 && x < row_count) {
+					// console.log(y*10+x);
+					if(squares[y*col_count+x]==='b') blackdg++;
+					else {
+						blackdg = 0;
+					}
+					if(blackdg===win_count){
+						setWinner('b');
+						break;
+					}
+				}
+			}
+			reddg = 0; blackdg = 0;
+			if(winner!=='') break;
+		}reddg = 0; blackdg = 0;
+		// red dg 2
 		for (k = 0; k <= 2 * (row_count - 1); ++k) {
 			for (y = col_count - 1; y >= 0; --y) {
 				x = k - (col_count - y);
 				if (x >= 0 && x < row_count) {
 					if(squares[y*col_count+x]==='r') reddg++;
-					else if(squares[y*col_count+x]==='b') blackdg++;
 					else {
 						reddg = 0;
-						blackdg = 0;
 					}
-					if(reddg===win_count || reddg===win_count){
+					if(reddg===win_count){
 						setWinner('r');
 						break;
 					}
-					else if(blackdg===win_count || blackdg===win_count){
+				}
+			}
+		}reddg = 0; blackdg = 0;
+		// black dg 2
+		for (k = 0; k <= 2 * (row_count - 1); ++k) {
+			for (y = col_count - 1; y >= 0; --y) {
+				x = k - (col_count - y);
+				if (x >= 0 && x < row_count) {
+					if(squares[y*col_count+x]==='b') blackdg++;
+					else {
+						blackdg = 0;
+					}
+					if(blackdg===win_count){
 						setWinner('b');
 						break;
 					}

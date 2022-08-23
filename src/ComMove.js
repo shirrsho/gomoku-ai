@@ -1,5 +1,3 @@
-import matchers from '@testing-library/jest-dom/matchers';
-import React, { useState } from 'react';
 
 export const comMove = (squares) => {
     let board = [...squares]
@@ -9,7 +7,7 @@ export const comMove = (squares) => {
     for(let i = 0 ; i < 100 ; i++){
         if(board[i]==''){
             board[i] = 'r'
-            let minimax_score = minimax(board,false,1);
+            let minimax_score = minimax(board,false,1,-Infinity,Infinity);
             if(minimax_score > score){
                 bestMove = i;
                 score = minimax_score;
@@ -134,23 +132,34 @@ function checkForWinner(board){
     for(var i = 0 ; i < row_count ; i++){
         for(var j = 0 ; j < col_count ; j++){
             if(squares[i*col_count+j]==='r') redrow++;
-            else if(squares[i*col_count+j]==='b') blackrow++;
             else {
                 redrow = 0;
-                blackrow = 0;
             }
             if(squares[j*row_count+i]==='r') redcol++;
-            else if(squares[j*row_count+i]==='b') blackcol++;
             else {
                 redcol = 0;
-                blackcol = 0;
             }
             // console.log(i+" ind"+(i*10+j)+"red"+red+"black"+black);
             if(redrow===win_count || redcol===win_count){
                 return 'r';
             }
-            else if(blackrow===win_count || blackcol===win_count){
-                return 'b'
+        }
+        redrow = 0; blackrow = 0;
+        redcol = 0; blackcol = 0;
+    }
+    for(var i = 0 ; i < row_count ; i++){
+        for(var j = 0 ; j < col_count ; j++){
+            if(squares[i*col_count+j]==='r') blackrow++;
+            else {
+                blackrow = 0;
+            }
+            if(squares[j*row_count+i]==='r') blackcol++;
+            else {
+                blackcol = 0;
+            }
+            // console.log(i+" ind"+(i*10+j)+"red"+red+"black"+black);
+            if(blackrow===win_count || blackcol===win_count){
+                return 'b';
             }
         }
         redrow = 0; blackrow = 0;
@@ -164,22 +173,33 @@ function checkForWinner(board){
             if (x >= 0 && x < row_count) {
                 // console.log(y*10+x);
                 if(squares[y*col_count+x]==='r') reddg++;
-                else if(squares[y*col_count+x]==='b') blackdg++;
                 else {
                     reddg = 0;
-                    blackdg = 0;
                 }
-                if(reddg===win_count || reddg===win_count){
+                if(reddg===win_count){
                     return 'r'
                 }
-                else if(blackdg===win_count || blackdg===win_count){
+            }
+        }
+        reddg = 0; blackdg = 0;
+    }
+    for (var k = 0; k <= 2 * (row_count - 1); ++k) {
+        
+        for (var y = col_count - 1; y >= 0; --y) {
+            var x = k - y;
+            if (x >= 0 && x < row_count) {
+                // console.log(y*10+x);
+                if(squares[y*col_count+x]==='b') blackdg++;
+                else {
+                    blackdg = 0;
+                }
+                if(blackdg===win_count){
                     return 'b'
                 }
             }
         }
         reddg = 0; blackdg = 0;
     }
-
     reddg = 0; blackdg = 0;
 
     for (var k = 0; k <= 2 * (row_count - 1); ++k) {
@@ -187,15 +207,24 @@ function checkForWinner(board){
             var x = k - (col_count - y);
             if (x >= 0 && x < row_count) {
                 if(squares[y*col_count+x]==='r') reddg++;
-                else if(squares[y*col_count+x]==='b') blackdg++;
                 else {
                     reddg = 0;
-                    blackdg = 0;
                 }
-                if(reddg===win_count || reddg===win_count){
+                if(reddg===win_count){
                     return 'r'
                 }
-                else if(blackdg===win_count || blackdg===win_count){
+            }
+        }
+    }
+    for (var k = 0; k <= 2 * (row_count - 1); ++k) {
+        for (var y = col_count - 1; y >= 0; --y) {
+            var x = k - (col_count - y);
+            if (x >= 0 && x < row_count) {
+                if(squares[y*col_count+x]==='b') blackdg++;
+                else {
+                    blackdg = 0;
+                }
+                if(blackdg===win_count){
                     return 'b'
                 }
             }
@@ -272,50 +301,91 @@ function sequence(board, player){
     return Math.max(row,col,ldg,rdg)
 }
 
-patterns = [
-    "bbbbb",
-    "bbbb-",
-    "bbb--",
-    "-bbb-",
-    "bb---",
-    "-bb--",
-    "b-bbb",
-    "bb-bb",
-    "b-bb-",
-    "bb-b-",
-    "--b--",
 
-    "rrrrr",
-    "rrrr-",
-    "rrr--",
-    "-rrr-",
-    "rr---",
-    "-rr--",
-    "r-rrr",
-    "rr-rr",
-    "r-rr-",
-    "rr-r-",
-    "--r--"
-];
 
-function matcher(board,player){
+function matcher(board){
+    let redpatterns = [
+        "rrrrr",
+        "-rrrr-",
+        "rrrr-",
+        "rrr--",
+        "-rrr-",
+        "rr---",
+        "-rr--",
+        "r-rrr",
+        "rr-rr",
+        "r-rr-",
+        "rr-r-",
+        "r----"
+    ];
+    let blackpatterns = [
+        "bbbbb",
+        "-bbbb-",
+        "bbbb-",
+        "bbb--",
+        "-bbb-",
+        "bb---",
+        "-bb--",
+        "b-bbb",
+        "bb-bb",
+        "b-bb-",
+        "bb-b-",
+        "b----"
+    ];
+    
+    let scores = [
+        100,
+        99,
+        80,
+        70,
+        70,
+        50,
+        55,
+        80,
+        80,
+        70,
+        70,
+        20
+    ]
 
+    let row_count = 10;
+    let col_count = 10;
+    let rows = []
+    let cols = []
+    let dgs = []
+    let redpoint = 0, blackpoint = 0;
+
+    //console.log("match");
+
+    for(let i = 0 ; i < row_count ; i++){
+        for(let j = 0 ; j < col_count ; j++){
+            if(board[i*col_count+j]=='') rows[i]+='-'
+            else rows[i] += board[i*col_count+j]
+        }
+        for(let j = 0 ; j < 12 ; j++){
+            if(rows[i].includes(redpatterns[j])) redpoint += scores[j]
+            if(rows[i].includes(blackpatterns[j])) blackpoint += scores[j]
+            
+        }
+    }
+
+    //console.log(redpoint," ",blackpoint);
+
+    if(redpoint>=blackpoint) return redpoint;
+    else return -1*blackpoint;
 }
 
-function evaluate(board,player){
-    //return sequence(board,player)
-    return matcher(board,player)
+function evaluate(board){
+    return Math.max(sequence(board,'r'),sequence(board,'b'))
+    //return matcher(board)
 }
 
-function minimax(board, maxPlayer, depth){
+function minimax(board, maxPlayer, depth, alpha, beta){
     
     // if(winner=='r') return 10;
     // else if(winner=='b') return -10;
     if(depth==3) {
-        let red = evaluate(board,'r')
-        let black = evaluate(board,'b')
-        if(red>=black) return red;
-        else return -1*black;
+        return evaluate(board);
     }
 
     //console.log(depth);
@@ -328,13 +398,19 @@ function minimax(board, maxPlayer, depth){
             board[i] = 'r'
             if(maxPlayer) {
                 board[i] = 'r';
-                score = Math.max(score, minimax(board,false,depth+1));
+                let minimax_score = minimax(board,false,depth+1,alpha,beta)
+                score = Math.max(score, minimax_score);
+                alpha = Math.max(score,alpha)
                 board[i] = ''
+                if(alpha>=beta) {console.log('max prunned'); break;}
             }
             else {
                 board[i] = 'b';
-                score = Math.min(score, minimax(board,true,depth+1));
+                let minimax_score =  minimax(board,true,depth+1,alpha,beta)
+                score = Math.min(score, minimax_score);
+                beta = Math.min(minimax_score,beta)
                 board[i] = ''
+                if(alpha>=beta) {console.log('min prunned'); break;}
             }
         }
     }
