@@ -4,7 +4,6 @@ import { comMove } from '../ComMove';
 import { checkForWinner } from './readboard';
 
 const Board = () => {
-
 	const row_count = 10;
 	const col_count = 10;
 	//const win_count = 5;
@@ -48,12 +47,14 @@ const Board = () => {
 		return <td onClick={() => handleClick(num)}><div className={cells[num]} /></td>;
 	};
 
-	useEffect(()=>{
-		if(turn=='r'){
-			let squares = [...cells]
-			let best = comMove(squares)
-			handleClick(best);
-		}
+	useEffect(() => {
+		setTimeout(() => {
+			if(turn == 'r'){
+				let squares = [...cells]
+				let best = comMove(squares)
+				handleClick(best);
+			}
+		}, 0)
 	},[turn])
 
     var t = 0;
