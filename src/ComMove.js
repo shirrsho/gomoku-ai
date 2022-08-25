@@ -19,174 +19,9 @@ export const comMove = (squares) => {
         }
     }
     console.log("best: ", bestMove);
-    squares[bestMove] = 'r'; // Computer max player
-    bestMove = -1;
+    //squares[bestMove] = 'r'; // Computer max player
+    return bestMove;
 }
-
-// function sequence(board, player){
-//     let squares = [...board]
-//     const row_count = 10;
-// 	const col_count = 10;
-
-//     let row = 0, trow = 0;
-//     let col = 0, tcol = 0;
-//     let ldg = 0, tldg = 0;
-//     let rdg = 0, trdg = 0;
-
-//     for(var i = 0 ; i < row_count ; i++){
-//         for(var j = 0 ; j < col_count ; j++){
-//             if(squares[i*col_count+j]===player){
-//                 trow++;
-//                 row = Math.max(row, trow);
-//             }
-//             else {
-//                 trow = 0;
-//             }
-//             if(squares[j*row_count+i]===player){
-//                 tcol++;
-//                 col = Math.max(col, tcol);
-//             }
-//             else {
-//                 tcol = 0;
-//             }
-//         }
-//         trow = 0;
-//         tcol = 0;
-//     }
-
-//     for (var k = 0; k <= 2 * (row_count - 1); ++k) {
-        
-//         for (var y = col_count - 1; y >= 0; --y) {
-//             var x = k - y;
-//             if (x >= 0 && x < row_count) {
-//                 // console.log(y*10+x);
-//                 if(squares[y*col_count+x]===player){
-//                     trdg++;
-//                     rdg = Math.max(rdg,trdg);
-//                 }
-//                 else {
-//                     rdg = 0;
-//                 }
-//             }
-//         }
-//         trdg = 0;
-//     }
-
-//     for (var k = 0; k <= 2 * (row_count - 1); ++k) {
-//         for (var y = col_count - 1; y >= 0; --y) {
-//             var x = k - (col_count - y);
-//             if (x >= 0 && x < row_count) {
-//                 if(squares[y*col_count+x]===player){
-//                     tldg++;
-//                     ldg = Math.max(tldg,ldg);
-//                 }
-//                 else {
-//                     tldg = 0;
-//                 }
-//             }
-//         }
-//     }
-
-//     return Math.max(row,col,ldg,rdg)
-// }
-
-// function matcher(board){
-//     let redpatterns = [
-//         "rrrrr",
-//         "-rrrr-",
-//         "rrrr-",
-//         "rrr--",
-//         "-rrr-",
-//         "rr---",
-//         "-rr--",
-//         "r-rrr",
-//         "rr-rr",
-//         "r-rr-",
-//         "rr-r-"
-//     ];
-//     let blackpatterns = [
-//         "bbbbb",
-//         "-bbbb-",
-//         "bbbb-",
-//         "bbb--",
-//         "-bbb-",
-//         "bb---",
-//         "-bb--",
-//         "b-bbb",
-//         "bb-bb",
-//         "b-bb-",
-//         "bb-b-"
-//     ];
-    
-//     let scores = [
-//         100,
-//         99,
-//         80,
-//         70,
-//         70,
-//         50,
-//         55,
-//         80,
-//         80,
-//         70,
-//         70
-//     ]
-
-//     // let redpatterns = [
-//     //     "rrrrr",
-//     //     "-rrrr-",
-//     //     "-rrr-",
-//     //     "rr"
-//     // ]
-//     // let blackpatterns = [
-//     //     "bbbbb",
-//     //     "-bbbb-",
-//     //     "-bbb-",
-//     //     "bb"
-//     // ]
-//     // let scores = [
-//     //     100,
-//     //     95,
-//     //     80,
-//     //     50
-//     // ]
-
-//     let row_count = 10;
-//     let col_count = 10;
-//     let boardstate = null
-//     let redpoint = 0, blackpoint = 0;
-
-//     //console.log("match");
-
-//     boardstate = boardlines(board)
-
-//     for(let i = 0 ; i < 19 ; i++){
-//         for (let j = 0; j < redpatterns.length; j++) {
-//             if(i<10) if(boardstate.rows[i].includes(redpatterns[j])) redpoint += scores[j];
-//             if(i<10) if(boardstate.cols[i].includes(redpatterns[j])) redpoint += scores[j];
-//             if(boardstate.ldgs[i].includes(redpatterns[j])) redpoint += scores[j];
-//             if(boardstate.rdgs[i].includes(redpatterns[j])) redpoint += scores[j];
-//             if(i<10) if(boardstate.rows[i].includes(redpatterns[j].split("").reverse().join(""))) redpoint += scores[j];
-//             if(i<10) if(boardstate.cols[i].includes(redpatterns[j].split("").reverse().join(""))) redpoint += scores[j];
-//             if(boardstate.ldgs[i].includes(redpatterns[j].split("").reverse().join(""))) redpoint += scores[j];
-//             if(boardstate.rdgs[i].includes(redpatterns[j].split("").reverse().join(""))) redpoint += scores[j];
-            
-//             if(i<10) if(boardstate.rows[i].includes(blackpatterns[j])) blackpoint += scores[j];
-//             if(i<10) if(boardstate.cols[i].includes(blackpatterns[j])) blackpoint += scores[j];
-//             if(boardstate.ldgs[i].includes(blackpatterns[j])) blackpoint += scores[j];
-//             if(boardstate.rdgs[i].includes(blackpatterns[j])) blackpoint += scores[j];
-//             if(i<10) if(boardstate.rows[i].includes(blackpatterns[j].split("").reverse().join(""))) blackpoint += scores[j];
-//             if(i<10) if(boardstate.cols[i].includes(blackpatterns[j].split("").reverse().join(""))) blackpoint += scores[j];
-//             if(boardstate.ldgs[i].includes(blackpatterns[j].split("").reverse().join(""))) blackpoint += scores[j];
-//             if(boardstate.rdgs[i].includes(blackpatterns[j].split("").reverse().join(""))) blackpoint += scores[j];
-//         }
-//     }
-
-//     //console.log(redpoint," ",blackpoint);
-
-//     if(redpoint>=blackpoint) return redpoint;
-//     else return -1*blackpoint;
-// }
 
 function getBoardEval(board,maxPlayer){
     let redfavor = {
@@ -261,8 +96,8 @@ function getBoardEval(board,maxPlayer){
     let fiveinrow = 0, livefour = 0, livethree = 0, deadfour = 0, deadthree = 0, deadtwo = 0;
 
     for(let i = 0 ; i < redfavor.fiveinrow.length ; i++){
-        if(findPattern(board,redfavor.fiveinrow[i]) > 0) return 1000;
-        if(findPattern(board,blackfavor.fiveinrow[i]) > 0) return -1000;
+        if(findPattern(board,redfavor.fiveinrow[i]) > 0) return 10000;
+        if(findPattern(board,blackfavor.fiveinrow[i]) > 0) return -10000;
     }
     for(let i = 0 ; i < redfavor.livefour.length ; i++){
         if(findPattern(board,redfavor.livefour[i])) return 1000;
@@ -315,9 +150,7 @@ function evaluate(board,maxPlayer){
 }
 
 function minimax(board, maxPlayer, depth, alpha, beta){
-    // let winner = checkForWinner(board);
-    // if(winner=='r') return 10;
-    // else if(winner=='b') return -10;
+
     if(depth===3) {
         return evaluate(board,maxPlayer);
     }

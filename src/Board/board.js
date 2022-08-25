@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './board.css';
 import { comMove } from '../ComMove';
 import { checkForWinner } from './readboard';
@@ -24,18 +24,18 @@ const Board = () => {
 		if (turn === 'b') {
 			squares[num] = 'b';
 			setCells(squares)
-			setTurn('r');
 			//boardlines(squares);
-			comMove(squares);
-			setTurn('b');
+			// comMove(squares);
+			// setTurn('b');
+			setTurn('r');
 		} else {
 			squares[num] = 'r';
 			setTurn('b');
 			// boardlines(squares);
 		}
-
-		setWinner(checkForWinner(squares));
+		//console.log(cells);
 		setCells(squares);
+		setWinner(checkForWinner(squares));
 	};
 
 	const handleRestart = () => {
@@ -45,15 +45,28 @@ const Board = () => {
 	};
 
 	const Cell = ({ num }) => {
-		return <td onClick={() => handleClick(num)}><span className={cells[num]} /></td>;
+		return <td onClick={() => handleClick(num)}><div className={cells[num]} /></td>;
 	};
+
+	useEffect(()=>{
+		if(turn=='r'){
+			let squares = [...cells]
+			let best = comMove(squares)
+			handleClick(best);
+		}
+	},[turn])
 
     var t = 0;
 
 	return (
 		<div className='container'>
+			{turn==='r' && (
+				<p>Computer's turn</p>
+			)}
+			{turn==='b' && (
+				<p>Your turn</p>
+			)}
 			<table>
-				{turn}
 				<tbody>
 					<tr>
 						<Cell num={t++} />
@@ -183,6 +196,7 @@ const Board = () => {
 					<button onClick={() => handleRestart()}>Play Again</button>
 				</>
 			)}
+			<button onClick={() => handleRestart()}>Restart Game</button>
 		</div>
 	);
 };
