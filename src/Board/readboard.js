@@ -15,7 +15,6 @@ export function surrounders(board){
     return indices;
 }
 
-
 export function boardlines(squares){
     let row_count = 10;
     let col_count = 10;

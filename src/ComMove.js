@@ -1,4 +1,4 @@
-import { boardlines, findPattern, surrounders } from "./Board/readboard";
+import { findPattern, surrounders } from "./Board/readboard";
 
 export const comMove = (squares) => {
     let board = [...squares]
@@ -8,6 +8,7 @@ export const comMove = (squares) => {
     indices = Array.from(indices)
 
     for(let i = 0 ; i < indices.length ; i++){
+        //console.log(indices[i]);
         if(board[indices[i]]===''){
             board[indices[i]] = 'r'
             let minimax_score = minimax(board,false,1,-Infinity,Infinity);
@@ -18,7 +19,8 @@ export const comMove = (squares) => {
             board[indices[i]] = ''
         }
     }
-    console.log("best: ", bestMove);
+    
+    console.log("best: ", bestMove, "score: ",score);
     //squares[bestMove] = 'r'; // Computer max player
     return bestMove;
 }
@@ -93,50 +95,58 @@ function getBoardEval(board,maxPlayer){
         ]
     }
     let redscore = 0, blackscore = 0;
-    let fiveinrow = 0, livefour = 0, livethree = 0, deadfour = 0, deadthree = 0, deadtwo = 0;
+    // let fiveinrow = 0, livefour = 0, livethree = 0, deadfour = 0, deadthree = 0, deadtwo = 0;
 
     for(let i = 0 ; i < redfavor.fiveinrow.length ; i++){
-        if(findPattern(board,redfavor.fiveinrow[i]) > 0) return 10000;
-        if(findPattern(board,blackfavor.fiveinrow[i]) > 0) return -10000;
+        if(findPattern(board,redfavor.fiveinrow[i]) > 0) return 1000000;
+        if(findPattern(board,blackfavor.fiveinrow[i]) > 0) return -1000000;
     }
     for(let i = 0 ; i < redfavor.livefour.length ; i++){
-        if(findPattern(board,redfavor.livefour[i])) return 1000;
-        if(findPattern(board,blackfavor.livefour[i]) > 0) return -1000;
+        if(findPattern(board,redfavor.livefour[i])) return 100000;
+        if(findPattern(board,blackfavor.livefour[i]) > 0) return -100000;
     }
     for(let i = 0 ; i < redfavor.deadfour.length ; i++){
         if(findPattern(board,redfavor.deadfour[i]) > 0){
-            if(maxPlayer) return 1000;
-            else redscore += 100;
+            if(maxPlayer) return 10000;
+            else redscore += findPattern(board,redfavor.deadfour[i])*10000;
         }
         if(findPattern(board,blackfavor.deadfour[i]) > 0){
-            if(!maxPlayer) return -1000;
-            else blackscore += findPattern(board,blackfavor.deadfour[i])*100;
+            if(!maxPlayer) return -10000;
+            else blackscore += findPattern(board,blackfavor.deadfour[i])*10000;
         }
     }
     for(let i = 0 ; i < redfavor.livethree.length ; i++){
         if(findPattern(board,redfavor.livethree[i]) > 0){
-            if(maxPlayer) return 1000;
-            else redscore += findPattern(board,redfavor.livethree[i])*200;
+            if(maxPlayer) return 5000;
+            else redscore += findPattern(board,redfavor.livethree[i])*4000;
         }
         if(findPattern(board,blackfavor.livethree[i]) > 0){
-            if(!maxPlayer) return -1000;
-            else blackscore += findPattern(board,blackfavor.livethree[i])*200;
+            if(!maxPlayer) return -5000;
+            else blackscore += findPattern(board,blackfavor.livethree[i])*4000;
         }
     }
     for(let i = 0 ; i < redfavor.deadthree.length ; i++){
-        if(findPattern(board,redfavor.deadthree[i]) > 0) redscore += findPattern(board,redfavor.deadthree[i])*150;
-        if(findPattern(board,blackfavor.deadthree[i]) > 0) blackscore += findPattern(board,blackfavor.deadthree[i])*150;
+        if(findPattern(board,redfavor.deadthree[i]) > 0){
+            if(maxPlayer) return 2000;
+            else redscore += findPattern(board,redfavor.deadthree[i])*4000;
+        }
+        if(findPattern(board,blackfavor.deadthree[i]) > 0){
+            if(!maxPlayer) return -2000;
+            else blackscore += findPattern(board,blackfavor.deadthree[i])*4000;
+        }
+        // if(findPattern(board,redfavor.deadthree[i]) > 0) redscore += findPattern(board,redfavor.deadthree[i])*300;
+        // if(findPattern(board,blackfavor.deadthree[i]) > 0) blackscore += findPattern(board,blackfavor.deadthree[i])*300;
     }
     for(let i = 0 ; i < redfavor.livetwo.length ; i++){
-        if(findPattern(board,redfavor.livetwo[i]) > 0) redscore += findPattern(board,redfavor.livetwo[i])*50;
-        if(findPattern(board,blackfavor.livetwo[i]) > 0) blackscore += findPattern(board,blackfavor.livetwo[i])*50;
+        if(findPattern(board,redfavor.livetwo[i]) > 0) redscore += findPattern(board,redfavor.livetwo[i])*200;
+        if(findPattern(board,blackfavor.livetwo[i]) > 0) blackscore += findPattern(board,blackfavor.livetwo[i])*200;
     }
     for(let i = 0 ; i < redfavor.deadtwo.length ; i++){
-        if(findPattern(board,redfavor.deadtwo[i]) > 0) redscore += findPattern(board,redfavor.deadtwo[i])*20;
-        if(findPattern(board,blackfavor.deadtwo[i]) > 0) blackscore += findPattern(board,blackfavor.deadtwo[i])*20;
+        if(findPattern(board,redfavor.deadtwo[i]) > 0) redscore += findPattern(board,redfavor.deadtwo[i])*100;
+        if(findPattern(board,blackfavor.deadtwo[i]) > 0) blackscore += findPattern(board,blackfavor.deadtwo[i])*100;
     }
     
-    if(redscore >= blackscore) return redscore;
+    if(redscore > blackscore) return redscore;
     else return -1*blackscore;
 }
 
@@ -151,8 +161,10 @@ function evaluate(board,maxPlayer){
 
 function minimax(board, maxPlayer, depth, alpha, beta){
 
-    if(depth===3) {
-        return evaluate(board,maxPlayer);
+    let boardvalue = evaluate(board,maxPlayer)
+    if(depth===3 || boardvalue===1000000 || boardvalue===-1000000) {
+        //console.log(boardvalue);
+        return boardvalue;
     }
 
     //console.log(depth);
@@ -172,7 +184,7 @@ function minimax(board, maxPlayer, depth, alpha, beta){
                 score = Math.max(score, minimax_score);
                 alpha = Math.max(score,alpha)
                 board[indices[i]] = ''
-                if(alpha>=beta) {console.log('max prunned'); break;}
+                if(alpha>=beta) {break;}
             }
             else {
                 board[indices[i]] = 'b';
@@ -180,7 +192,7 @@ function minimax(board, maxPlayer, depth, alpha, beta){
                 score = Math.min(score, minimax_score);
                 beta = Math.min(minimax_score,beta)
                 board[indices[i]] = ''
-                if(alpha>=beta) {console.log('min prunned'); break;}
+                if(alpha>=beta) { break;}
             }
         }
     }
