@@ -60,14 +60,14 @@ const Board = () => {
     var t = 0;
 
 	return (
-		<div className='container'>
+		<div className='container mt-5'>
 			{turn==='r' && (
-				<p>Computer's turn</p>
+				<b><p><span class="red">Red</span>'s Turn!</p></b>
 			)}
 			{turn==='b' && (
-				<p>Your turn</p>
+				<b><p>Your Turn!</p></b>
 			)}
-			<table>
+			<table className="box">
 				<tbody>
 					<tr>
 						<Cell num={t++} />
@@ -191,13 +191,19 @@ const Board = () => {
 					</tr>
 				</tbody>
 			</table>
-			{winner && (
+			{winner==='r' && (
 				<>
-					<p>{winner} is the winner!</p>
-					<button onClick={() => handleRestart()}>Play Again</button>
+					<b className="mt-4 mb-3"><p><span class="red">Red</span> is the winner!</p></b>
+					<button class="btndd" onClick={() => handleRestart()}>Play Again</button>
 				</>
 			)}
-			<button onClick={() => handleRestart()}>Restart Game</button>
+			{winner==='b' && (
+				<>
+					<b className="mt-4 mb-3"><p><span class="black">Black</span> is the winner!</p></b>
+					<button class="btndd" onClick={() => handleRestart()}>Play Again</button>
+				</>
+			)}
+			<button class="btndd mt-4" onClick={() => handleRestart()}>Restart Game</button>
 		</div>
 	);
 };
