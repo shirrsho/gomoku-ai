@@ -3,6 +3,7 @@ body {
   background-image: url(../public/mainbg.png);
   background-size: 1550px 725px;
   background-repeat: no-repeat;
+  font-family: 'Finlandica', sans-serif;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
