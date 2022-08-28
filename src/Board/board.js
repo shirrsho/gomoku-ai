@@ -44,7 +44,7 @@ const Board = () => {
 	};
 
 	const Cell = ({ num }) => {
-		return <td onClick={() => handleClick(num)}><div className={cells[num]} /></td>;
+		return <td class="tb-hover" onClick={() => handleClick(num)}><div className={cells[num]} /></td>;
 	};
 
 	useEffect(() => {

@@ -77,3 +77,7 @@ table td {
   .box {
 	margin-top: 60px;
   }
+
+  .tb-hover:hover {
+	background-color: #14C3C9;
+  }
