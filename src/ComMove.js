@@ -121,7 +121,7 @@ function getBoardEval(board,maxPlayer){
             else redscore += findPattern(board,redfavor.livethree[i])*4000;
         }
         if(findPattern(board,blackfavor.livethree[i]) > 0){
-            if(!maxPlayer) return -5000;
+            if(!maxPlayer) return -4500;
             else blackscore += findPattern(board,blackfavor.livethree[i])*4000;
         }
     }

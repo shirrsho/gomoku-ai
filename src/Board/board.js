@@ -49,13 +49,13 @@ const Board = () => {
 
 	useEffect(() => {
 		setTimeout(() => {
-			if(turn == 'r'){
+			if(turn === 'r'){
 				let squares = [...cells]
 				let best = comMove(squares)
 				handleClick(best);
 			}
 		}, 0)
-	},[turn])
+	})
 
     var t = 0;
 

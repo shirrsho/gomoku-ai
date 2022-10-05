@@ -26,8 +26,8 @@ export function boardlines(squares){
     
     for(let i = 0 ; i < 100 ; i++) if(box[i]==='') box[i] = '-'
     for (let i = 0; i < row_count; i++) {
-        rows[i] = new String()
-        cols[i] = new String()
+        rows[i] = ""
+        cols[i] = ""
         for (let j = 0; j < col_count; j++) {
             rows[i] += box[i*col_count+j]
             cols[i] += box[i+col_count*j]
@@ -40,7 +40,7 @@ export function boardlines(squares){
         if(i>9) start = (i-9)*9+i;
         if(i<10) dgsize = i+1;
         else dgsize--;
-        ldgs[i] = new String()
+        ldgs[i] = ""
         for(let j = 0 ; j < dgsize ; j++){
             ldgs[i] += box[start];
             start+=9
@@ -52,7 +52,7 @@ export function boardlines(squares){
         if(i>9) start = (i-10)*10+10;
         if(i<10) dgsize = i+1;
         else dgsize--;
-        rdgs[i] = new String()
+        rdgs[i] = "";
         for(let j = 0 ; j < dgsize ; j++){
             rdgs[i] += box[start];
             start+=11
